@@ -3,7 +3,7 @@ import { User, House, BookOpen, Search } from 'lucide-react';
 export default function Footer() {
 
     return (
-        <div className="flex flex-row w-full max-w-lg justify-evenly bg-primary py-1 sticky">
+        <div className="flex flex-row w-full justify-evenly bg-primary py-1 sticky">
 
             {/*ligne des icones avec leurs noms*/}
                 <a href='/' className="flex ">
