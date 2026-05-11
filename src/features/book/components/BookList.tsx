@@ -1,6 +1,7 @@
 import BookCard from "./BookCard";
 import cover from "../../../assets/cover_test.jpg";
 import { ChevronRight } from "lucide-react";
+import { Link } from "react-router";
 
 export default function BookList() {
 
@@ -23,6 +24,12 @@ export default function BookList() {
             author: "Auteur 3",
             synopsis: "Bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla"
         },
+        {
+            image: cover,
+            title: "Titre 4",
+            author: "Auteur 4",
+            synopsis: "Bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla"
+        }
     ]
 
     const books = bookTab.map((book) => (
@@ -38,14 +45,12 @@ export default function BookList() {
 
     return (
         <div>
-            <div className="flex justify-between pb-4">
+            <Link to="" className="flex justify-between pb-4 md:justify-start">
                 <h1 className="font-semibold">Livres populaires</h1>
-                <a href="">
-                    <ChevronRight />
-                </a>
-            </div>
+                <ChevronRight />
+            </Link>
             <div className="mt-2">
-                <ul className="flex flex-col gap-1.5">
+                <ul className="flex flex-col gap-1.5 md:grid md:grid-cols-3">
                     {books}
                 </ul>
             </div>

@@ -1,3 +1,5 @@
+import { Link } from "react-router"
+
 interface BookCardProps {
   image: string
   title: string
@@ -8,7 +10,7 @@ interface BookCardProps {
 export default function BookCard({ image, title, author, synopsis }: BookCardProps) {
   return (
     <div className="grid grid-cols-1 justify-items-center">
-      <a href="" className="grid grid-cols-2 mx-2 p-2 border border-primary rounded-xl gap-4">
+      <Link to="" className="grid grid-cols-2 mx-2 p-2 border border-primary rounded-xl gap-4">
         <div>
           <img src={image} alt="couverture du livre" className="rounded-xl w-full h-32 object-cover" />
         </div>
@@ -17,7 +19,7 @@ export default function BookCard({ image, title, author, synopsis }: BookCardPro
           <h3 className="text-xs italic">{author}</h3>
           <p className="text-xs line-clamp-3 overflow-hidden">{synopsis}</p>
         </div>
-      </a>
+      </Link>
     </div>
   );
 }
