@@ -8,7 +8,7 @@ interface BookCardProps {
 export default function BookCard({ image, title, author, synopsis }: BookCardProps) {
   return (
     <div className="grid grid-cols-1 justify-items-center">
-      <a href="" className="grid grid-cols-2 mx-2 p-2 border border-primary rounded-xl gap-4 w-[95%]">
+      <a href="" className="grid grid-cols-2 mx-2 p-2 border border-primary rounded-xl gap-4">
         <div>
           <img src={image} alt="couverture du livre" className="rounded-xl w-full h-32 object-cover" />
         </div>
