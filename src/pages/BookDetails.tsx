@@ -1,6 +1,7 @@
 import { useParams } from "react-router";
 import BookDescription from "../features/bookDetails/components/BookDescription";
 import HeroSection from "../features/bookDetails/components/HeroSection";
+import ReserveSection from "../features/bookDetails/components/ReserveSection";
 import ReviewSection from "../features/bookDetails/components/ReviewSection";
 import { getBookById } from "../features/books/data/mockBooks";
 
@@ -12,7 +13,7 @@ export default function BookDetails() {
   if (!book) return <p>Le livre recherché est introuvable</p>;
 
   return (
-    <main className="pb-4">
+    <main className="pb-20">
       <HeroSection thumbnail={book.thumbnail} title={book.title} />
       <BookDescription
         title={book.title}
@@ -24,6 +25,7 @@ export default function BookDetails() {
         description={book.description}
       />
       <ReviewSection />
+      <ReserveSection />
     </main>
   );
 }
