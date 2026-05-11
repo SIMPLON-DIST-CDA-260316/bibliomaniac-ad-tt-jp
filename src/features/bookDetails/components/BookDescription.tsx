@@ -27,15 +27,15 @@ export default function BookDescription({
       </h2>
       <p className="pt-6">Synopsis : {description}</p>
       <ul className="flex justify-center gap-1 pt-6">
-        <li className="h-20 w-28 flex flex-col items-center justify-center bg-accent rounded-lg font-semibold text-xl">
+        <li className="h-20 w-28 flex flex-col items-center gap-1 justify-center bg-accent rounded-lg font-semibold text-xl/5 text-center">
           <Layers />
           {pageCount}
         </li>
-        <li className="h-20 w-28 flex flex-col items-center justify-center bg-accent rounded-lg font-semibold text-xl">
+        <li className="h-20 w-28 flex flex-col items-center gap-1 justify-center bg-accent rounded-lg font-semibold text-xl/5 text-center">
           <Palette />
           {categories[0]}
         </li>
-        <li className="h-20 w-28 flex flex-col items-center justify-center bg-accent rounded-lg font-semibold text-xl">
+        <li className="h-20 w-28 flex flex-col items-center gap-1 justify-center bg-accent rounded-lg font-semibold text-xl/5 text-center">
           <Languages />
           {language.toUpperCase()}
         </li>

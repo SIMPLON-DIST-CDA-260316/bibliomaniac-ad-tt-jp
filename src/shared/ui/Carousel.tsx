@@ -17,8 +17,8 @@ export default function Carousel<T>({
   onSeeMore,
 }: CarouselProps<T>) {
   return (
-    <section className="py-8">
-      <div className="flex items-center justify-between mb-6 px-1">
+    <section className="py-6">
+      <div className="flex items-center justify-between mb-6">
         {title ? (
           <h2
             className="text-2xl font-bold tracking-tight"
@@ -46,7 +46,9 @@ export default function Carousel<T>({
         {items.map((item, i) => (
           <div
             key={i}
-            style={{ flex: `0 0 calc(${100 / visibleCount}% - ${(visibleCount - 1) * 16 / visibleCount}px)` }}
+            style={{
+              flex: `0 0 calc(${100 / visibleCount}% - ${((visibleCount - 1) * 16) / visibleCount}px)`,
+            }}
           >
             {renderItem(item, i)}
           </div>

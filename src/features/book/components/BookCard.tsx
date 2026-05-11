@@ -1,18 +1,30 @@
-import { Link } from "react-router"
+import { Link } from "react-router";
 
 interface BookCardProps {
-  image: string
-  title: string
-  author: string
-  synopsis: string
+  image: string;
+  title: string;
+  author: string;
+  synopsis: string;
 }
 
-export default function BookCard({ image, title, author, synopsis }: BookCardProps) {
+export default function BookCard({
+  image,
+  title,
+  author,
+  synopsis,
+}: BookCardProps) {
   return (
     <div className="grid grid-cols-1 justify-items-center">
-      <Link to="" className="grid grid-cols-2 mx-2 p-2 border border-primary rounded-xl gap-4">
+      <Link
+        to=""
+        className="grid grid-cols-2 mx-2 p-2 border border-primary rounded-xl gap-4"
+      >
         <div>
-          <img src={image} alt="couverture du livre" className="rounded-xl w-full h-32 object-cover" />
+          <img
+            src={image}
+            alt="couverture du livre"
+            className="rounded-xl w-full h-32 object-cover"
+          />
         </div>
         <div className="flex flex-col gap-2">
           <h2 className="text-sm font-bold">{title}</h2>

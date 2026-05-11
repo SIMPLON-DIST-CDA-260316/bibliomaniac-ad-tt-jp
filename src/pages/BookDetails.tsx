@@ -3,6 +3,7 @@ import BookDescription from "../features/bookDetails/components/BookDescription"
 import HeroSection from "../features/bookDetails/components/HeroSection";
 import ReserveSection from "../features/bookDetails/components/ReserveSection";
 import ReviewSection from "../features/bookDetails/components/ReviewSection";
+import SuggestionSection from "../features/bookDetails/components/SuggestionSection";
 import { getBookById } from "../features/books/data/mockBooks";
 
 export default function BookDetails() {
@@ -13,7 +14,7 @@ export default function BookDetails() {
   if (!book) return <p>Le livre recherché est introuvable</p>;
 
   return (
-    <main className="pb-20">
+    <main className="pb-16">
       <HeroSection thumbnail={book.thumbnail} title={book.title} />
       <BookDescription
         title={book.title}
@@ -26,6 +27,7 @@ export default function BookDetails() {
       />
       <ReviewSection />
       <ReserveSection />
+      <SuggestionSection bookId={book.id} categories={book.categories} />
     </main>
   );
 }
