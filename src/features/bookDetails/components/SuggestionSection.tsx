@@ -15,20 +15,49 @@ export default function SuggestionSection({
 
   return (
     <section className="px-6">
-      <Carousel
-        title="Dans le même genre"
-        visibleCount={3.5}
-        items={suggestedBooks}
-        renderItem={(book) => (
-          <Link to={`/books/${book.id}`} onClick={() => window.scrollTo(0, 0)}>
-            <img
-              src={book.thumbnail}
-              alt={book.title}
-              className="w-full h-31 rounded-lg object-cover"
-            />
-          </Link>
-        )}
-      />
+      {/* Mobile : carousel */}
+      <div className="md:hidden">
+        <Carousel
+          title="Dans le même genre"
+          visibleCount={3.5}
+          items={suggestedBooks}
+          renderItem={(book) => (
+            <Link
+              to={`/books/${book.id}`}
+              onClick={() => window.scrollTo(0, 0)}
+            >
+              <img
+                src={book.thumbnail}
+                alt={book.title}
+                className="w-full h-31 rounded-lg object-cover"
+              />
+            </Link>
+          )}
+        />
+      </div>
+
+      {/* Desktop : grille */}
+      <div className="hidden md:block">
+        <h2 className="text-2xl font-bold tracking-tight mb-6">
+          Dans le même genre
+        </h2>
+        <div className="grid grid-cols-5 gap-3">
+          {suggestedBooks.slice(0, 10).map((book) => (
+            <Link
+              key={book.id}
+              to={`/books/${book.id}`}
+              onClick={() => window.scrollTo(0, 0)}
+            >
+              <img
+                src={book.thumbnail}
+                alt={book.title}
+                title={book.title}
+                className="w-full h-36 rounded-lg object-cover hover:opacity-80 transition-opacity"
+              />
+            </Link>
+          ))}
+        </div>
+      </div>
     </section>
   );
 }

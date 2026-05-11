@@ -24,8 +24,8 @@ export default function HeroSection({ thumbnail, title }: HeroSectionProps) {
   };
 
   return (
-    <section className="bg-primary/50 flex justify-center pt-6 px-6">
-      <div className="absolute w-full flex justify-between px-6">
+    <section className="bg-primary/50 flex justify-center pt-6 px-6 md:bg-transparent md:relative md:flex-col md:items-center md:justify-end md:pb-8 md:min-h-80">
+      <div className="absolute w-full flex justify-between px-6 md:top-4 md:left-0 md:right-0 md:w-full">
         <IconButton icon={ChevronLeft} onClick={() => navigate(-1)} />
         <div className="relative flex flex-col items-center">
           <IconButton icon={copied ? Check : Share2} onClick={handleShare} />
@@ -36,7 +36,11 @@ export default function HeroSection({ thumbnail, title }: HeroSectionProps) {
           )}
         </div>
       </div>
-      <img src={thumbnail} alt={title} className="h-64" />
+      <img
+        src={thumbnail}
+        alt={title}
+        className="h-64 md:h-56 md:mt-12 md:rounded-xl md:shadow-xl md:object-cover"
+      />
     </section>
   );
 }

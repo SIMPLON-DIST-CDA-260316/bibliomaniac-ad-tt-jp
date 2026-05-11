@@ -14,20 +14,22 @@ export default function BookDetails() {
   if (!book) return <p>Le livre recherché est introuvable</p>;
 
   return (
-    <main className="pb-16">
-      <HeroSection thumbnail={book.thumbnail} title={book.title} />
-      <BookDescription
-        title={book.title}
-        authors={book.authors}
-        publishedDate={book.publishedDate}
-        pageCount={book.pageCount}
-        categories={book.categories}
-        language={book.language}
-        description={book.description}
-      />
+    <div className="pb-16 md:max-w-4xl md:mx-auto">
+      <section className="md:grid md:grid-cols-[260px_1fr]">
+        <HeroSection thumbnail={book.thumbnail} title={book.title} />
+        <BookDescription
+          title={book.title}
+          authors={book.authors}
+          publishedDate={book.publishedDate}
+          pageCount={book.pageCount}
+          categories={book.categories}
+          language={book.language}
+          description={book.description}
+        />
+      </section>
       <ReviewSection />
       <ReserveSection />
       <SuggestionSection bookId={book.id} categories={book.categories} />
-    </main>
+    </div>
   );
 }

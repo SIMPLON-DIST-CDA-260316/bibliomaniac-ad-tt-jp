@@ -53,7 +53,6 @@ export default function ReviewSection() {
             </article>
           ))}
         </div>
-
         <div className="flex justify-center gap-2 pb-4">
           {reviews.map((review, i) => (
             <button
