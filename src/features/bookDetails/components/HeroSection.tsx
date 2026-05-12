@@ -36,11 +36,17 @@ export default function HeroSection({ thumbnail, title }: HeroSectionProps) {
           )}
         </div>
       </div>
-      <img
-        src={thumbnail}
-        alt={title}
-        className="h-64 md:h-56 md:mt-12 md:rounded-xl md:shadow-xl md:object-cover"
-      />
+      {thumbnail ? (
+        <img
+          src={thumbnail}
+          alt={title}
+          className="h-64 md:h-56 md:mt-12 md:rounded-xl md:shadow-xl md:object-cover"
+        />
+      ) : (
+        <div className="h-64 w-44 md:h-56 md:mt-12 md:rounded-xl md:shadow-xl bg-primary/20 flex items-center justify-center text-sm text-foreground/40 rounded-xl">
+          Couverture indisponible
+        </div>
+      )}
     </section>
   );
 }
