@@ -1,12 +1,10 @@
 import { useState } from "react";
 import BookList from "../features/book/components/BookList";
 import FilterButton from "../shared/ui/FilterButton";
-import { mockBooks } from "../features/books/data/mockBooks";
 
 export default function Homepage() {
 
-  // récupère les catégories de l'api, supprime les doublons et en fait un nouveau tableau
-const categoriesTab = [...new Set(mockBooks.flatMap((book) => book.categories))]
+  const categoriesTab = ["Fantasy", "Science-Fiction", "Aventure", "Policier", "Littérature", "Jeunesse", "Dystopie", "Historique", "Philosophie", "Romance"]
 
   const [ titleFilter, setTitleFilter ] = useState<string>(categoriesTab[0]);
 
