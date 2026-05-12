@@ -1,10 +1,12 @@
 import BookList from "../features/book/components/BookList";
 import { useParams } from "react-router";
-import BackItem from "../shared/ui/BackItem";
 import { useState } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useNavigate } from "react-router";
+import { ChevronLeft, ChevronRight, CircleArrowLeft } from "lucide-react";
+import IconButton from "../shared/ui/IconButton";
 
 export default function BookListPage() {
+    const navigate = useNavigate();
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [filterChoice, setFilterChoice] = useState<string>('');
 
@@ -15,7 +17,7 @@ export default function BookListPage() {
     return (
         <div className="px-3 py-4 md:p-10">
             <div className="flex justify-between">
-                <BackItem />
+                <IconButton icon={CircleArrowLeft} onClick={() => navigate(-1)} className="cursor-pointer text-primary bg-transparent"/>
                 {/* '?? '' ' si jamais category est undefined */}
                 <select value={filterChoice} onChange={(e) => setFilterChoice(e.target.value)} className="w-24">
                     <option value="">Trier par...</option>
