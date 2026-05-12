@@ -4,14 +4,31 @@ import HeroSection from "../features/bookDetails/components/HeroSection";
 import ReserveSection from "../features/bookDetails/components/ReserveSection";
 import ReviewSection from "../features/bookDetails/components/ReviewSection";
 import SuggestionSection from "../features/bookDetails/components/SuggestionSection";
-import { getBookById } from "../features/books/data/mockBooks";
+import { useBook } from "../features/bookDetails/hooks/useBook";
 
 export default function BookDetails() {
   const { id } = useParams();
   if (!id) return <p>Identifiant du livre manquant</p>;
 
-  const book = getBookById(id);
-  if (!book) return <p>Le livre recherché est introuvable</p>;
+  return <BookDetailsContent id={id} />;
+}
+
+function BookDetailsContent({ id }: { id: string }) {
+  const { book, isPending, error } = useBook(id);
+
+  if (isPending)
+    return (
+      <p className="text-center text-sm text-gray-500 py-16">
+        Chargement du livre…
+      </p>
+    );
+
+  if (error || !book)
+    return (
+      <p className="text-center text-sm text-red-500 py-16">
+        Impossible de charger ce livre. Vérifie ta connexion.
+      </p>
+    );
 
   return (
     <div className="pb-16 md:max-w-4xl md:mx-auto">
