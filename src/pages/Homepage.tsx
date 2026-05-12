@@ -1,30 +1,21 @@
 import { useState } from "react";
 import BookList from "../features/book/components/BookList";
 import FilterButton from "../shared/ui/FilterButton";
+import { mockBooks } from "../features/books/data/mockBooks";
 
 export default function Homepage() {
 
-  const filterTab = [
-    { name: 'Nouveautés' },
-    { name: 'Popularité' },
-    { name: 'Science-Fiction' },
-    { name: 'Policier' },
-    { name: 'BD' },
-    { name: 'Nouvelles' },
-    { name: 'Romans' },
-    { name: 'Jeunesse' },
-    { name: 'Fantasy' },
-    { name: 'Aventure' }
-  ]
+  // récupère les catégories de l'api, supprime les doublons et en fait un nouveau tableau
+const categoriesTab = [...new Set(mockBooks.flatMap((book) => book.categories))]
 
-  const [ titleFilter, setTitleFilter ] = useState<string>(filterTab[0].name);
+  const [ titleFilter, setTitleFilter ] = useState<string>(categoriesTab[0]);
 
-  const filters = filterTab.map((filter) => (
+  const filters = categoriesTab.map((filter) => (
     <FilterButton
-      key={filter.name}
-      name={filter.name}
+      key={filter}
+      name={filter}
       className="w-full"
-      onClick={() => setTitleFilter(filter.name)}
+      onClick={() => setTitleFilter(filter)}
     />
   ))
 
