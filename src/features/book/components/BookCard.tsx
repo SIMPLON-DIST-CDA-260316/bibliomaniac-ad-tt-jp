@@ -13,7 +13,7 @@ export default function BookCard({ id, thumbnail, title, authors, description }:
     <div className="grid grid-cols-1 justify-items-center">
       <Link
         to={`/books/${id}`}
-        className="grid grid-cols-2 p-2 border border-primary rounded-xl gap-4 w-full h-36 md:w-64 md:grid-cols-1 md:hover:scale-105 md:transition-transform md:duration-100"
+        className="grid grid-cols-2 p-2 border border-primary rounded-xl gap-4 w-full h-36 md:h-92 md:w-full md:grid-cols-1 md:hover:scale-105 md:transition-transform md:duration-100"
       >
         <div>
           {thumbnail ? (
@@ -25,8 +25,8 @@ export default function BookCard({ id, thumbnail, title, authors, description }:
           )}
         </div>
         <div className="flex flex-col gap-2">
-          <h2 className="text-sm font-bold line-clamp-2 md:text-center">{title || "Titre inconnu"}</h2>
-          <h3 className="text-xs italic md:text-center">{authors || "Auteur inconnu"}</h3>
+          <h2 className="text-sm font-bold line-clamp-2">{title || "Titre inconnu"}</h2>
+          <h3 className="text-xs italic">{authors || "Auteur inconnu"}</h3>
           <p
             className="text-xs line-clamp-3 overflow-hidden italic text-foreground/60"
             dangerouslySetInnerHTML={{ __html: description || "Description non disponible." }}
