@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 import { ChevronLeft, ChevronRight, CircleArrowLeft } from "lucide-react";
 import IconButton from "../shared/ui/IconButton";
+import SortSelect from "../shared/ui/SortSelect";
 
 export default function BookListPage() {
     const navigate = useNavigate();
@@ -17,15 +18,9 @@ export default function BookListPage() {
     return (
         <div className="px-3 py-4 md:p-10">
             <div className="flex justify-between">
-                <IconButton icon={CircleArrowLeft} onClick={() => navigate(-1)} className="cursor-pointer text-primary bg-transparent"/>
+                <IconButton icon={CircleArrowLeft} onClick={() => navigate(-1)} className="cursor-pointer text-primary bg-transparent" />
                 {/* '?? '' ' si jamais category est undefined */}
-                <select value={filterChoice} onChange={(e) => setFilterChoice(e.target.value)} className="w-24">
-                    <option value="">Trier par...</option>
-                    <option value="date-desc">Du + récent au - récent</option>
-                    <option value="date-asc">Du - récent au + récent</option>
-                    <option value="rating-desc">Du mieux noté au moins noté</option>
-                    <option value="rating-asc">Du moins noté au mieux noté</option>
-                </select>
+                <SortSelect filterChoice={filterChoice} setFilterChoice={setFilterChoice} />
             </div>
             <BookList
                 title={category ?? ''}

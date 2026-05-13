@@ -16,14 +16,18 @@ export default function BookList({ title, isLink = true, page = 1, booksPerPage 
     const { books, isPending, error } = useBooks(title);
     // Pour les filtres, new Date transforme la string en date et getTime(), la date en nombre pour la comparaison
     const sortedBooks = [...books].sort((a: Book, b: Book) => {
+        if (filterChoice === "title-asc")
+            return a.title.localeCompare(b.title);
+        if (filterChoice === "title-desc")
+            return b.title.localeCompare(a.title);
         if (filterChoice === "date-desc")
-            return new Date(b.publishedDate).getTime() - new Date(a.publishedDate).getTime()
+            return new Date(b.publishedDate).getTime() - new Date(a.publishedDate).getTime();
         if (filterChoice === "date-asc")
-            return new Date(a.publishedDate).getTime() - new Date(b.publishedDate).getTime()
+            return new Date(a.publishedDate).getTime() - new Date(b.publishedDate).getTime();
         if (filterChoice === "rating-desc")
-            return b.averageRating - a.averageRating
+            return b.averageRating - a.averageRating;
         if (filterChoice === "rating-asc")
-            return a.averageRating - b.averageRating
+            return a.averageRating - b.averageRating;
         // .sort() attend un nombre si aucun filtre choisi
         return 0
     })
