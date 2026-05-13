@@ -45,7 +45,7 @@ function BookDetailsContent({ id }: { id: string }) {
         />
       </section>
       <ReviewSection />
-      <ReserveSection />
+      <ReserveSection book={book} />
       <SuggestionSection bookId={book.id} categories={book.categories} />
     </div>
   );
