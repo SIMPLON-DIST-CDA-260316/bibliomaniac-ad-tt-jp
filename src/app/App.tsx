@@ -4,6 +4,7 @@ import Homepage from "../pages/Homepage";
 import Layout from "../shared/ui/Layout";
 import BookListPage from "../pages/BookListPage";
 import LibraryPage from "../pages/LibraryPage";
+import SearchPage from "../pages/SearchPage";
 
 export default function App() {
   return (
@@ -12,6 +13,7 @@ export default function App() {
         <Route path="/" element={<Homepage />} />
         <Route path="/books/:id" element={<BookDetails />} />
         <Route path="/category/:category" element={<BookListPage />} />
+        <Route path="/search" element={<SearchPage />} />
         <Route path="/library" element={<LibraryPage />} />
       </Routes>
     </Layout>
