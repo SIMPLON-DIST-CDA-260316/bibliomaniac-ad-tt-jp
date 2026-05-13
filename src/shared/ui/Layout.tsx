@@ -1,6 +1,5 @@
 import Header from "./Header";
 import Footer from "./Footer";
-import BottomNav from "./BottomNav";
 import type React from "react";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
@@ -11,7 +10,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         {children}
       </main>
       <Footer />
-      {/* <BottomNav /> */}
     </div>
   );
 }
