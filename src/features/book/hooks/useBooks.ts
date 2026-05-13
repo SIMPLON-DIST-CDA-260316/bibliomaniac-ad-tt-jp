@@ -2,8 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import { searchBooks } from "../../../entities/book/api/openLibraryApi";
 import type { Book } from "../../../entities/book/model/types";
 
-export function useBooks(query: string) {
+export function useBooks(query: string, page: number = 1, booksPerPage: number = 20) {
   const [books, setBooks] = useState<Book[]>([]);
+  const [totalResults, setTotalResults] = useState<number>(0);
   const [isPending, setIsPending] = useState(true);
   const [error, setError] = useState<Error | null>(null);
   const abortRef = useRef<AbortController | null>(null);
@@ -13,9 +14,10 @@ export function useBooks(query: string) {
     const controller = new AbortController();
     abortRef.current = controller;
 
-    searchBooks(query, { maxResults: 40, langRestrict: "fr" }, controller.signal)
-      .then((results) => {
+    searchBooks(query, { maxResults: booksPerPage, langRestrict: "fr", page }, controller.signal)
+      .then(({ books: results, totalResults: total }) => {
         setBooks(results);
+        setTotalResults(total);
         setIsPending(false);
         setError(null);
       })
@@ -27,7 +29,7 @@ export function useBooks(query: string) {
       });
 
     return () => controller.abort();
-  }, [query]);
+  }, [query, page, booksPerPage]);
 
-  return { books, isPending, error };
+  return { books, totalResults, isPending, error };
 }

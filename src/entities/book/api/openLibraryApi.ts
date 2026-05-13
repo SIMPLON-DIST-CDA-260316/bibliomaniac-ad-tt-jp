@@ -61,12 +61,13 @@ const LANG_TO_OL: Record<string, string> = {
 
 export async function searchBooks(
   query: string,
-  options?: { maxResults?: number; langRestrict?: string },
+  options?: { maxResults?: number; langRestrict?: string; page?: number },
   signal?: AbortSignal,
-): Promise<Book[]> {
+): Promise<{ books: Book[]; totalResults: number }> {
   const params: Record<string, string | number> = {
     fields: SEARCH_FIELDS,
-    limit: options?.maxResults ?? 40,
+    limit: options?.maxResults ?? 20,
+    page: options?.page ?? 1,
     q: query,
   };
 
@@ -75,7 +76,10 @@ export async function searchBooks(
   }
 
   const data = await searchGet(params, signal);
-  return (data.docs ?? []).map(mapOpenLibraryDocToBook);
+  return {
+    books: (data.docs ?? []).map(mapOpenLibraryDocToBook),
+    totalResults: data.numFound ?? 0
+  }
 }
 
 export async function fetchBookById(

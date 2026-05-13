@@ -22,10 +22,12 @@ type SearchbarProps = {
   minQueryLength?: number;
   className?: string;
   id?: string;
+  submitOnly?: boolean
 };
 
 export default function Searchbar({
   onSearch,
+  submitOnly = false,
   placeholder = "Recherche...",
   debounceMs = 400,
   isLoading = false,
@@ -42,6 +44,7 @@ export default function Searchbar({
   const debouncedQuery = useDebounce(inputValue, debounceMs);
 
   useEffect(() => {
+    if (submitOnly) return
     const trimmed = debouncedQuery.trim();
     if (trimmed.length === 0 || trimmed.length >= minQueryLength) {
       onSearch(trimmed);
