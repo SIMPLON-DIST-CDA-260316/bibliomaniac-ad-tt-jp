@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { fetchBookById } from "../../../entities/book/api/googleBooksApi";
+import { fetchBookById } from "../../../entities/book/api/openLibraryApi";
 import type { Book } from "../../../entities/book/model/types";
 
 export function useBook(id: string) {
