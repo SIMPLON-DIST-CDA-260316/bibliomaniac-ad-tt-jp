@@ -1,19 +1,20 @@
 import { ChevronRight } from "lucide-react";
 import { Link } from "react-router";
-import { useBooks } from "../hooks/useBooks";
 import BookCard from "./BookCard";
 import type { Book } from "../../../entities/book/model/types";
 
 interface BookListProps {
     title: string
     isLink?: boolean
+    books: Book[]
+    isPending: boolean
+    error: Error | null
     page?: number
     booksPerPage?: number
     filterChoice?: string
 }
 
-export default function BookList({ title, isLink = true, page = 1, booksPerPage = 20, filterChoice }: BookListProps) {
-    const { books, isPending, error } = useBooks(title);
+export default function BookList({ title, isLink = true, books, isPending, error, filterChoice }: BookListProps) {
     // Pour les filtres, new Date transforme la string en date et getTime(), la date en nombre pour la comparaison
     const sortedBooks = [...books].sort((a: Book, b: Book) => {
         if (filterChoice === "title-asc")
@@ -32,9 +33,6 @@ export default function BookList({ title, isLink = true, page = 1, booksPerPage 
         return 0
     })
 
-    // Pagination avec les livres une fois triés
-    const start = (page - 1) * booksPerPage
-    const paginatedBooks = sortedBooks.slice(start, start + booksPerPage)
 
     return (
         <div className="pt-8 pb-14">
@@ -51,7 +49,7 @@ export default function BookList({ title, isLink = true, page = 1, booksPerPage 
                 {error && <p className="text-center text-sm text-red-500 py-8">Impossible de charger les livres.</p>}
                 {!isPending && !error && (
                     <ul className="flex flex-col gap-1.5 md:grid md:grid-cols-4 md:gap-4">
-                        {paginatedBooks.map((book) => (
+                        {sortedBooks.map((book) => (
                             <li key={book.id}>
                                 <BookCard
                                     id={book.id}

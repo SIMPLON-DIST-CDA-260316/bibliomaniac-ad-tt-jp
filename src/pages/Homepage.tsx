@@ -3,13 +3,14 @@ import BookList from "../features/book/components/BookList";
 import FilterButton from "../shared/ui/FilterButton";
 import Searchbar from "../shared/ui/Searchbar";
 import { useNavigate } from "react-router";
+import { useBooks } from "../features/book/hooks/useBooks";
 
 export default function Homepage() {
 
   const categoriesTab = ["Fantasy", "Science-Fiction", "Aventure", "Policier", "Littérature", "Jeunesse", "Dystopie", "Historique", "Philosophie", "Romance"]
 
-  const [ titleFilter, setTitleFilter ] = useState<string>(categoriesTab[0]);
-
+  const [titleFilter, setTitleFilter] = useState<string>(categoriesTab[0]);
+  const { books, isPending, error } = useBooks(titleFilter);
   const filters = categoriesTab.map((filter) => (
     <FilterButton
       key={filter}
@@ -20,9 +21,9 @@ export default function Homepage() {
   ));
 
   const navigate = useNavigate();
-    const handleSearch = useCallback((query: string) => {
-        if (query) navigate(`/search?q=${query}`)
-    }, [navigate])
+  const handleSearch = useCallback((query: string) => {
+    if (query) navigate(`/search?q=${query}`)
+  }, [navigate])
 
   return (
     <div className="px-3 py-4 md:p-10">
@@ -33,7 +34,12 @@ export default function Homepage() {
           {filters}
         </div>
       </div>
-      <BookList title={titleFilter}/>
+      <BookList
+        title={titleFilter}
+        books={books}
+        isPending={isPending}
+        error={error}
+      />
     </div>
   );
 }
