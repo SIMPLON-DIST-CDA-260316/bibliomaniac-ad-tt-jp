@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
-import { searchBooksByCategory } from "../../../entities/book/api/googleBooksApi";
+import { searchBooksByCategory } from "../../../entities/book/api/openLibraryApi";
 import type { Book } from "../../../entities/book/model/types";
 import Carousel from "../../../shared/ui/Carousel";
 
