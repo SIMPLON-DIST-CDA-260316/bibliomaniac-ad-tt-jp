@@ -8,6 +8,7 @@ import SortSelect from "../shared/ui/SortSelect";
 import { useState } from "react";
 import Pagination from "../shared/ui/Pagination";
 import { useBooks } from "../features/book/hooks/useBooks";
+import ScrollToTopButton from "../shared/ui/ScrollToTopButton";
 
 export default function SearchPage() {
 
@@ -37,6 +38,7 @@ export default function SearchPage() {
             <p className="text-center my-0.5">Entrez un mot, un titre, un auteur...</p>
             <Searchbar onSearch={handleSearch} className="mx-6 mt-2" />
             <BookList title={query} isLink={false} books={books} isPending={isPending} error={error} filterChoice={filterChoice} />
+            <ScrollToTopButton />
             {query && (
                 <Pagination
                     currentPage={currentPage}

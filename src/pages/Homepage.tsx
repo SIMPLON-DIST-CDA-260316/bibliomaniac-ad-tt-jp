@@ -4,6 +4,7 @@ import FilterButton from "../shared/ui/FilterButton";
 import Searchbar from "../shared/ui/Searchbar";
 import { useNavigate } from "react-router";
 import { useBooks } from "../features/book/hooks/useBooks";
+import ScrollToTopButton from "../shared/ui/ScrollToTopButton";
 
 export default function Homepage() {
 
@@ -41,6 +42,7 @@ export default function Homepage() {
         isPending={isPending}
         error={error}
       />
+      <ScrollToTopButton />
     </div>
   );
 }
