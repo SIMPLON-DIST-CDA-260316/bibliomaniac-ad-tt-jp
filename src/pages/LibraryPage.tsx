@@ -1,7 +1,11 @@
-import {useState} from "react";
+import {useState, useMemo} from "react";
 import {Search, ChevronRight, Plus} from "lucide-react";
 import {Link} from "react-router";
 import Tabs from "../shared/ui/Tabs";
+import {useReservation} from "../features/reservation";
+import {useBooks} from "../features/book/hooks/useBooks";
+import {useDebounce} from "../shared/lib/hooks/useDebounce";
+import type {Book as EntityBook} from "../entities/book/model/types";
 import cover from "../assets/cover_test.jpg";
 
 type Tab = "Etagères" | "Journal" | "Stats";
@@ -9,8 +13,10 @@ type Category = "En cours" | "Empruntés" | "Envies" | "Terminés";
 
 const TABS: Tab[] = ["Etagères", "Journal", "Stats"];
 const SECTIONS: Category[] = ["En cours", "Empruntés", "Envies", "Terminés"];
+const FETCHED_SECTIONS: Category[] = ["En cours", "Envies", "Terminés"];
 
-interface Book {
+interface DisplayBook {
+  id: string;
   image: string;
   title: string;
   author: string;
@@ -18,90 +24,53 @@ interface Book {
   category: Category;
 }
 
-// Placeholder data, needs to be replaced with API call later
-const BOOKS: Book[] = [
-  {
-    image: cover,
-    title: "Titre 1",
-    author: "Auteur 1",
-    synopsis: "Dans un monde où les livres ont disparu, Elena part à la recherche du dernier exemplaire encore existant.",
-    category: "En cours"
-  },
-  {
-    image: cover,
-    title: "Titre 2",
-    author: "Auteur 2",
-    synopsis: "Un voyage initiatique à travers les continents à la découverte de soi et des autres.",
-    category: "En cours"
-  },
-  {
-    image: cover,
-    title: "Titre 3",
-    author: "Auteur 3",
-    synopsis: "Une histoire de trahison et de résilience dans un Paris du XIXe siècle.",
-    category: "En cours"
-  },
-  {
-    image: cover,
-    title: "Titre 4",
-    author: "Auteur 4",
-    synopsis: "La saga d'une famille à travers trois générations de guerres et de paix.",
-    category: "En cours"
-  },
-  {
-    image: cover,
-    title: "Titre 5",
-    author: "Auteur 5",
-    synopsis: "Un roman graphique qui redéfinit les frontières entre réalité et fiction.",
-    category: "Empruntés"
-  },
-  {
-    image: cover,
-    title: "Titre 6",
-    author: "Auteur 6",
-    synopsis: "L'histoire vraie d'un alpiniste qui a bravé l'Everest sans oxygène.",
-    category: "Empruntés"
-  },
-  {
-    image: cover,
-    title: "Titre 7",
-    author: "Auteur 7",
-    synopsis: "Une enquête policière dans les ruelles sombres de Lyon.",
-    category: "Empruntés"
-  },
-  {
-    image: cover,
-    title: "Titre 8",
-    author: "Auteur 8",
-    synopsis: "Un conte philosophique sur le sens de la vie et de l'amour.",
-    category: "Envies"
-  },
-  {
-    image: cover,
-    title: "Titre 9",
-    author: "Auteur 9",
-    synopsis: "Le récit d'une révolution artistique à Montmartre au début du XXe siècle.",
-    category: "Envies"
-  },
-  {
-    image: cover,
-    title: "Titre 10",
-    author: "Auteur 10",
-    synopsis: "Une dystopie où la mémoire collective est contrôlée par l'État.",
-    category: "Envies"
-  },
-  {
-    image: cover,
-    title: "Titre 11",
-    author: "Auteur 11",
-    synopsis: "Le portrait d'une génération perdue entre deux guerres.",
-    category: "Terminés"
-  },
-];
+function mapToDisplayBook(book: EntityBook, category: Category): DisplayBook {
+  return {
+    id: book.id,
+    image: book.thumbnail || cover,
+    title: book.title,
+    author: book.authors?.join(", ") || "Auteur inconnu",
+    synopsis: book.description || "",
+    category,
+  };
+}
 
-function BookSection({category}: { category: Category }) {
-  const books = BOOKS.filter((b) => b.category === category);
-  if (books.length === 0) return null;
+function distributeBooks(books: EntityBook[]): Record<Category, DisplayBook[]> {
+  const perSection = Math.max(1, Math.ceil(books.length / FETCHED_SECTIONS.length));
+  const result: Record<Category, DisplayBook[]> = {
+    "En cours": [],
+    "Empruntés": [],
+    "Envies": [],
+    "Terminés": [],
+  };
+
+  FETCHED_SECTIONS.forEach((category, i) => {
+    const slice = books.slice(i * perSection, (i + 1) * perSection);
+    result[category] = slice.map((b) => mapToDisplayBook(b, category));
+  });
+
+  return result;
+}
+
+function BookSection({category, books}: { category: Category; books: DisplayBook[] }) {
+  const { reservedBooks } = useReservation();
+
+  let displayBooks = books;
+
+  if (category === "Empruntés") {
+    const existingTitles = new Set(displayBooks.map((b) => b.title));
+    const reservedMapped: DisplayBook[] = reservedBooks
+      .filter((rb) => !existingTitles.has(rb.title))
+      .map((rb) => ({
+        id: rb.id,
+        image: rb.thumbnail || cover,
+        title: rb.title,
+        author: rb.authors?.join(", ") || "Auteur inconnu",
+        synopsis: rb.description || "",
+        category: "Empruntés" as Category,
+      }));
+    displayBooks = [...displayBooks, ...reservedMapped];
+  }
 
   return (
     <section className="mb-6">
@@ -111,19 +80,27 @@ function BookSection({category}: { category: Category }) {
           Voir plus <ChevronRight size={16}/>
         </Link>
       </div>
-      <div
-        className="flex gap-3 overflow-x-auto px-4 pb-1"
-        style={{scrollbarWidth: "none"}}
-      >
-        {books.map((book) => (
-          <img
-            key={book.title}
-            src={book.image}
-            alt={book.title}
-            className="shrink-0 w-24 h-36 object-cover rounded-lg"
-          />
-        ))}
-      </div>
+      {displayBooks.length === 0 ? (
+        <p className="px-4 text-sm text-text/40 italic">
+          {category === "Empruntés"
+            ? "Aucun livre emprunté pour le moment."
+            : "Aucun livre dans cette section."}
+        </p>
+      ) : (
+        <div
+          className="flex gap-3 overflow-x-auto px-4 pb-1 snap-x snap-mandatory"
+        >
+          {displayBooks.map((book) => (
+            <Link key={book.id} to={`/books/${book.id}`} className="snap-start shrink-0">
+              <img
+                src={book.image}
+                alt={book.title}
+                className="w-24 h-36 object-cover rounded-lg"
+              />
+            </Link>
+          ))}
+        </div>
+      )}
     </section>
   );
 }
@@ -131,6 +108,14 @@ function BookSection({category}: { category: Category }) {
 export default function LibraryPage() {
   const [activeTab, setActiveTab] = useState<Tab>("Etagères");
   const [search, setSearch] = useState("");
+  const debouncedSearch = useDebounce(search, 400);
+  const effectiveQuery = debouncedSearch || "roman";
+  const { books: fetchedBooks, isPending, error } = useBooks(effectiveQuery);
+
+  const booksByCategory = useMemo(
+    () => distributeBooks(fetchedBooks),
+    [fetchedBooks],
+  );
 
   return (
     <div className="flex flex-col min-h-screen bg-background">
@@ -154,10 +139,28 @@ export default function LibraryPage() {
       </div>
 
       <div className="flex-1 pb-16">
-        {activeTab === "Etagères" &&
-          SECTIONS.map((category) => (
-            <BookSection key={category} category={category}/>
-          ))}
+        {activeTab === "Etagères" && (
+          <>
+            {isPending && (
+              <p className="text-center text-sm text-gray-500 py-8">
+                Chargement des livres…
+              </p>
+            )}
+            {error && (
+              <p className="text-center text-sm text-red-500 py-8">
+                Impossible de charger les livres. Une erreur est survenue.
+              </p>
+            )}
+            {!isPending && !error &&
+              SECTIONS.map((category) => (
+                <BookSection
+                  key={category}
+                  category={category}
+                  books={booksByCategory[category]}
+                />
+              ))}
+          </>
+        )}
       </div>
 
       <button
