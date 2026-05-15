@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router";
 import { searchBooksByCategory } from "../../../entities/book/api/openLibraryApi";
-import type { Book } from "../../../entities/book/model/types";
+import { bookKeys } from "../../../entities/book/api/queryKeys";
 import Carousel from "../../../shared/ui/Carousel";
 
 type SuggestionSectionProps = {
@@ -13,20 +13,12 @@ export default function SuggestionSection({
   bookId,
   categories,
 }: SuggestionSectionProps) {
-  const [suggestedBooks, setSuggestedBooks] = useState<Book[]>([]);
-
-  useEffect(() => {
-    const controller = new AbortController();
-    const category = categories[0] ?? "fiction";
-
-    searchBooksByCategory(category, bookId, controller.signal)
-      .then(setSuggestedBooks)
-      .catch((err: Error) => {
-        if (err.name !== "AbortError") console.error(err);
-      });
-
-    return () => controller.abort();
-  }, [bookId, categories]);
+  const category = categories[0] ?? "fiction";
+  const { data: suggestedBooks = [] } = useQuery({
+    queryKey: bookKeys.category(category, bookId),
+    queryFn: ({ signal }) => searchBooksByCategory(category, bookId, signal),
+    enabled: categories.length > 0,
+  });
 
   if (suggestedBooks.length === 0) return null;
 
@@ -43,11 +35,17 @@ export default function SuggestionSection({
               to={`/books/${book.id}`}
               onClick={() => window.scrollTo(0, 0)}
             >
-              <img
-                src={book.thumbnail}
-                alt={book.title}
-                className="w-full h-31 rounded-lg object-cover"
-              />
+              {book.thumbnail ? (
+                <img
+                  src={book.thumbnail}
+                  alt={book.title}
+                  className="w-full h-31 rounded-lg object-cover"
+                />
+              ) : (
+                <div className="w-full h-31 rounded-lg bg-primary/20 flex items-center justify-center text-xs text-foreground/40 text-center px-1">
+                  Couverture indisponible
+                </div>
+              )}
             </Link>
           )}
         />
@@ -65,12 +63,21 @@ export default function SuggestionSection({
               to={`/books/${book.id}`}
               onClick={() => window.scrollTo(0, 0)}
             >
-              <img
-                src={book.thumbnail}
-                alt={book.title}
-                title={book.title}
-                className="w-full h-36 rounded-lg object-cover hover:opacity-80 transition-opacity"
-              />
+              {book.thumbnail ? (
+                <img
+                  src={book.thumbnail}
+                  alt={book.title}
+                  title={book.title}
+                  className="w-full h-36 rounded-lg object-cover hover:opacity-80 transition-opacity"
+                />
+              ) : (
+                <div
+                  title={book.title}
+                  className="w-full h-36 rounded-lg bg-primary/20 flex items-center justify-center text-xs text-foreground/40 text-center px-1 hover:opacity-80 transition-opacity"
+                >
+                  Couverture indisponible
+                </div>
+              )}
             </Link>
           ))}
         </div>

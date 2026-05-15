@@ -14,7 +14,7 @@ export default function BookDetails() {
 }
 
 function BookDetailsContent({ id }: { id: string }) {
-  const { book, isPending, error } = useBook(id);
+  const { data: book, isPending, error } = useBook(id);
 
   if (isPending)
     return (
