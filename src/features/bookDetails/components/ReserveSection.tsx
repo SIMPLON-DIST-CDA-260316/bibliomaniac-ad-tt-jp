@@ -20,7 +20,7 @@ export default function ReserveSection({ book }: { book: Book }) {
 
   return (
     <section className="pt-6 px-6 md:flex md:justify-center">
-      <Button onClick={() => setIsModalOpen(true)} fullWidth className="md:w-72!">
+      <Button onClick={() => setIsModalOpen(true)} fullWidth ghost={reserved} className="md:w-72!">
         {reserved ? "Annuler la réservation" : "Réserver maintenant"}
       </Button>
       <ConfirmationModal

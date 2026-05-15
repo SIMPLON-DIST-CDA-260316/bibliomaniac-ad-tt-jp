@@ -35,11 +35,17 @@ export default function SuggestionSection({
               to={`/books/${book.id}`}
               onClick={() => window.scrollTo(0, 0)}
             >
-              <img
-                src={book.thumbnail}
-                alt={book.title}
-                className="w-full h-31 rounded-lg object-cover"
-              />
+              {book.thumbnail ? (
+                <img
+                  src={book.thumbnail}
+                  alt={book.title}
+                  className="w-full h-31 rounded-lg object-cover"
+                />
+              ) : (
+                <div className="w-full h-31 rounded-lg bg-primary/20 flex items-center justify-center text-xs text-foreground/40 text-center px-1">
+                  Couverture indisponible
+                </div>
+              )}
             </Link>
           )}
         />
@@ -57,12 +63,21 @@ export default function SuggestionSection({
               to={`/books/${book.id}`}
               onClick={() => window.scrollTo(0, 0)}
             >
-              <img
-                src={book.thumbnail}
-                alt={book.title}
-                title={book.title}
-                className="w-full h-36 rounded-lg object-cover hover:opacity-80 transition-opacity"
-              />
+              {book.thumbnail ? (
+                <img
+                  src={book.thumbnail}
+                  alt={book.title}
+                  title={book.title}
+                  className="w-full h-36 rounded-lg object-cover hover:opacity-80 transition-opacity"
+                />
+              ) : (
+                <div
+                  title={book.title}
+                  className="w-full h-36 rounded-lg bg-primary/20 flex items-center justify-center text-xs text-foreground/40 text-center px-1 hover:opacity-80 transition-opacity"
+                >
+                  Couverture indisponible
+                </div>
+              )}
             </Link>
           ))}
         </div>

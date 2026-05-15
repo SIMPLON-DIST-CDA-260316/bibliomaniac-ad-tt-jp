@@ -110,7 +110,8 @@ export default function LibraryPage() {
   const [search, setSearch] = useState("");
   const debouncedSearch = useDebounce(search, 400);
   const effectiveQuery = debouncedSearch || "roman";
-  const { books: fetchedBooks, isPending, error } = useBooks(effectiveQuery);
+  const { data, isPending, error } = useBooks(effectiveQuery);
+  const fetchedBooks = data?.books ?? [];
 
   const booksByCategory = useMemo(
     () => distributeBooks(fetchedBooks),
