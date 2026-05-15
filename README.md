@@ -149,7 +149,7 @@ L'application est hébergée sur **Vercel** avec déploiement continu depuis la 
 
 ## 👥 Contributeurs
 
-Anaïs D, Thélio T, Jordan P
+Anaïs D, Thélio T et Jordan P.
 
 ---
 
