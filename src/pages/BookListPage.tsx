@@ -14,8 +14,9 @@ export default function BookListPage() {
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [filterChoice, setFilterChoice] = useState<string>('');
     const booksPerPage = 20;
-    const { books, isPending, error, totalResults } = useBooks(category ?? '', currentPage, booksPerPage);
-    const totalPages = Math.ceil(totalResults / booksPerPage);
+    const { data, isPending, error } = useBooks(category ?? '', currentPage, booksPerPage);
+    const books = data?.books ?? [];
+    const totalPages = Math.ceil((data?.totalResults ?? 0) / booksPerPage);
 
     return (
         <div className="px-3 py-4 md:p-10">

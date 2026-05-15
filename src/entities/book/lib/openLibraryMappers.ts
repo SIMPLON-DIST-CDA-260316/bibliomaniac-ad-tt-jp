@@ -24,7 +24,7 @@ export function mapOpenLibraryDocToBook(doc: OpenLibrarySearchDoc): Book {
   const language = LANGUAGE_MAP[rawLang] ?? rawLang.slice(0, 2);
 
   const thumbnail = doc.cover_i
-    ? `https://covers.openlibrary.org/b/id/${doc.cover_i}-M.jpg`
+    ? `${import.meta.env.VITE_OPEN_LIBRARY_COVERS_URL}/b/id/${doc.cover_i}-M.jpg`
     : "";
 
   return {

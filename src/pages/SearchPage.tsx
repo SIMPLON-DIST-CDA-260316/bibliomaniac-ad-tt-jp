@@ -18,8 +18,9 @@ export default function SearchPage() {
     const query = searchParams.get("q") ?? "";
 
     const booksPerPage = 20;
-    const { books, isPending, error, totalResults } = useBooks(query, currentPage, booksPerPage);
-    const totalPages = Math.ceil(totalResults / booksPerPage);
+    const { data, isPending, error } = useBooks(query, currentPage, booksPerPage);
+    const books = data?.books ?? [];
+    const totalPages = Math.ceil((data?.totalResults ?? 0) / booksPerPage);
 
     const navigate = useNavigate();
     const handleSearch = useCallback((query: string) => {

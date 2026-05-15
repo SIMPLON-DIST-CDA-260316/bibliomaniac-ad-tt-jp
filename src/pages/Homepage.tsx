@@ -10,7 +10,8 @@ export default function Homepage() {
   const categoriesTab = ["Fantasy", "Science-Fiction", "Aventure", "Policier", "Littérature", "Jeunesse", "Dystopie", "Historique", "Philosophie", "Romance"]
 
   const [titleFilter, setTitleFilter] = useState<string>(categoriesTab[0]);
-  const { books, isPending, error } = useBooks(titleFilter);
+  const { data, isPending, error } = useBooks(titleFilter);
+  const books = data?.books ?? [];
   const filters = categoriesTab.map((filter) => (
     <FilterButton
       key={filter}

@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router";
 import { searchBooksByCategory } from "../../../entities/book/api/openLibraryApi";
-import type { Book } from "../../../entities/book/model/types";
+import { bookKeys } from "../../../entities/book/api/queryKeys";
 import Carousel from "../../../shared/ui/Carousel";
 
 type SuggestionSectionProps = {
@@ -13,20 +13,12 @@ export default function SuggestionSection({
   bookId,
   categories,
 }: SuggestionSectionProps) {
-  const [suggestedBooks, setSuggestedBooks] = useState<Book[]>([]);
-
-  useEffect(() => {
-    const controller = new AbortController();
-    const category = categories[0] ?? "fiction";
-
-    searchBooksByCategory(category, bookId, controller.signal)
-      .then(setSuggestedBooks)
-      .catch((err: Error) => {
-        if (err.name !== "AbortError") console.error(err);
-      });
-
-    return () => controller.abort();
-  }, [bookId, categories]);
+  const category = categories[0] ?? "fiction";
+  const { data: suggestedBooks = [] } = useQuery({
+    queryKey: bookKeys.category(category, bookId),
+    queryFn: ({ signal }) => searchBooksByCategory(category, bookId, signal),
+    enabled: categories.length > 0,
+  });
 
   if (suggestedBooks.length === 0) return null;
 
